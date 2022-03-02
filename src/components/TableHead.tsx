@@ -19,7 +19,14 @@ export const TableHead = ({ sortBy, showFavourites }: TableHeadProps) => (
       >
         Name
       </th>
-      <th className={thStyle}>Description</th>
+      <th
+        className={thStyle}
+        onClick={() => {
+          sortBy("description");
+        }}
+      >
+        Description
+      </th>
       <th
         className={thStyle}
         onClick={() => {
@@ -28,7 +35,14 @@ export const TableHead = ({ sortBy, showFavourites }: TableHeadProps) => (
       >
         Language
       </th>
-      <th className={thStyle}>Stars</th>
+      <th
+        className={thStyle}
+        onClick={() => {
+          sortBy("stargazers_count");
+        }}
+      >
+        Stars
+      </th>
       <th className={thStyle}>
         Favourite{" "}
         <button
