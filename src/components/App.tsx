@@ -7,7 +7,6 @@ import Loader from "./Loader";
 import { ThunkDispatch } from "redux-thunk";
 import { TableHead } from "./TableHead";
 import { TableRow } from "./TableRow";
-import "./App.css";
 
 interface AppProps {
   repos: Repo[];
@@ -17,7 +16,7 @@ interface AppProps {
 interface AppState {
   fetching: boolean;
   showFavourites: boolean;
-  sortBy: string;
+  sorter: keyof Repo | "";
   ascending: boolean;
 }
 
@@ -28,7 +27,7 @@ class _App extends React.Component<AppProps, AppState> {
     this.state = {
       fetching: false,
       showFavourites: false,
-      sortBy: "",
+      sorter: "",
       ascending: false,
     };
   }
@@ -46,32 +45,24 @@ class _App extends React.Component<AppProps, AppState> {
     this.setState({ fetching: true });
   }
 
-  private getRepos = (): Repo[] => {
-    const { sortBy } = this.state;
-    const localRepos = JSON.parse(localStorage.getItem("favourites")!) || [];
-    const ids = new Set(localRepos.map(({ id }: Repo) => id));
-    const unsorted = this.props.repos.length
-      ? [
-          ...localRepos,
-          ...this.props.repos.filter(({ id }: Repo) => ids && !ids.has(id)),
-        ]
-      : [];
+  private sortRepos = (): Repo[] => {
+    const { sorter } = this.state;
 
-    return sortBy
-      ? unsorted.sort((a, b) =>
+    return sorter
+      ? this.props.repos.sort((a: Repo, b: Repo) =>
           this.state.ascending
-            ? a[sortBy] < b[sortBy]
+            ? a[sorter]! < b[sorter]!
               ? -1
-              : a[sortBy] > b[sortBy]
+              : a[sorter]! > b[sorter]!
               ? 1
               : 0
-            : b[sortBy] < a[sortBy]
+            : b[sorter]! < a[sorter]!
             ? -1
-            : b[sortBy] > a[sortBy]
+            : b[sorter]! > a[sorter]!
             ? 1
             : 0
         )
-      : unsorted;
+      : this.props.repos;
   };
 
   private showFavourites = () => {
@@ -80,9 +71,9 @@ class _App extends React.Component<AppProps, AppState> {
     });
   };
 
-  private sortBy = (sorter: string) => {
+  private sortBy = (sorter: keyof Repo) => {
     this.setState({
-      sortBy: sorter,
+      sorter,
       ascending: !this.state.ascending,
     });
   };
@@ -91,7 +82,7 @@ class _App extends React.Component<AppProps, AppState> {
     <table className="min-w-full border-collapse block md:table">
       <TableHead showFavourites={this.showFavourites} sortBy={this.sortBy} />
       <tbody className="block md:table-row-group">
-        {this.getRepos().reduce(
+        {this.sortRepos().reduce(
           (rows: JSX.Element[], repo: Repo, i) =>
             this.state.showFavourites
               ? [

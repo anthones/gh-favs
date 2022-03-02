@@ -1,5 +1,7 @@
+import { Repo } from "../actions";
+
 interface TableHeadProps {
-  sortBy: (sorter: string) => void;
+  sortBy: (sorter: keyof Repo) => void;
   showFavourites: () => void;
 }
 

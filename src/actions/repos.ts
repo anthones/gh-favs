@@ -31,11 +31,10 @@ export interface removeFavouriteAction {
 export const fetchRepos = (): ThunkActions<FetchReposAction> => {
   return async (dispatch: Dispatch): Promise<void> => {
     const response = await axios.get<{ items: Repo[] }>(getURL()!);
-    const local = JSON.parse(localStorage.getItem("favourites")!) || [];
 
     dispatch<FetchReposAction>({
       type: ActionTypes.fetchRepos,
-      payload: [...response.data.items, ...local],
+      payload: response.data.items,
     });
   };
 };
