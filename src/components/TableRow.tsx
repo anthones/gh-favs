@@ -6,7 +6,7 @@ import { Heart } from "./Heart";
 
 interface TableRowProps {
   repo: Repo;
-  key: number;
+  index: number;
   addFavourite: (repoId: number, repo: Repo) => Promise<void>;
   removeFavourite: (repoId: number) => Promise<void>;
 }
@@ -17,7 +17,7 @@ const spanStyle = "inline-block w-1/3 md:hidden font-bold";
 
 export const _TableRow = ({
   repo,
-  key: i,
+  index: i,
   addFavourite,
   removeFavourite,
 }: TableRowProps) => {

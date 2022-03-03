@@ -8,4 +8,4 @@ export interface StoreState {
 
 export const reducers = combineReducers<StoreState>({
   repos: ReposReducer,
-} as any);
+});

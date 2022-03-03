@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import { Repo, fetchRepos, Action } from "../actions";
 import { StoreState } from "../reducers";
-import Loader from "./Loader";
+import { Loader } from "./Loader";
 import { ThunkDispatch } from "redux-thunk";
 import { TableHead } from "./TableHead";
 import { TableRow } from "./TableRow";
@@ -88,10 +88,10 @@ class _App extends React.Component<AppProps, AppState> {
               ? [
                   ...rows,
                   ...(repo.isFavourited
-                    ? [<TableRow repo={repo} key={i} />]
+                    ? [<TableRow repo={repo} key={i} index={i} />]
                     : []),
                 ]
-              : [...rows, <TableRow repo={repo} key={i} />],
+              : [...rows, <TableRow repo={repo} key={i} index={i} />],
           []
         )}
       </tbody>
